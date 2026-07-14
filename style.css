@@ -247,11 +247,12 @@ a:hover {
     margin: 20px 0;
     display: block;
 }
+
 .sidebar-section {
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
-.sidebar-heading {
+.sidebar-heading, .sidebar-subheading {
     background: none;
     border: none;
     color: #f4f4f5;
@@ -260,22 +261,44 @@ a:hover {
     padding: 8px 0;
     cursor: pointer;
     width: 100%;
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebar-subheading {
-    color: #71717a;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 14px 0 4px 0;
-}
-
-.sidebar-body {
-    display: none;
+    font-size: 14px;
     padding-left: 4px;
 }
 
-.sidebar-section.open .sidebar-body {
+.arrow {
+    transition: transform 0.15s ease;
+    color: #71717a;
+}
+
+.sidebar-section.open > .sidebar-heading .arrow {
+    transform: rotate(90deg);
+}
+
+.sidebar-subgroup.open > .sidebar-subheading .arrow {
+    transform: rotate(90deg);
+}
+
+.sidebar-body, .sidebar-subbody {
+    display: none;
+    padding-left: 8px;
+}
+
+.sidebar-section.open > .sidebar-body {
     display: block;
+}
+
+.sidebar-subgroup.open > .sidebar-subbody {
+    display: block;
+}
+
+.sidebar-link.active {
+    border-left: 2px solid #5b8def;
+    padding-left: 10px;
+    margin-left: -12px;
 }

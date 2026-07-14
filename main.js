@@ -28,6 +28,12 @@ document.addEventListener('click', function (e) {
 
             if (newMain && currentMain) {
                 currentMain.innerHTML = newMain.innerHTML;
+                document.querySelectorAll('.sidebar-link.active').forEach(function (link) {
+                    const section = link.closest('.sidebar-section');
+                    if (section) section.classList.add('open');
+                    const subgroup = link.closest('.sidebar-subgroup');
+                    if (subgroup) subgroup.classList.add('open');
+                });
                 document.title = doc.title;
                 window.history.pushState({}, '', href);
 
@@ -55,6 +61,12 @@ window.addEventListener('popstate', function () {
             const currentMain = document.querySelector('main.site-main');
             if (newMain && currentMain) {
                 currentMain.innerHTML = newMain.innerHTML;
+                document.querySelectorAll('.sidebar-link.active').forEach(function (link) {
+                    const section = link.closest('.sidebar-section');
+                    if (section) section.classList.add('open');
+                    const subgroup = link.closest('.sidebar-subgroup');
+                    if (subgroup) subgroup.classList.add('open');
+                });
                 document.title = doc.title;
             }
         });
@@ -63,11 +75,19 @@ window.addEventListener('popstate', function () {
 document.addEventListener('click', function (e) {
     const btn = e.target.closest('.js-toggle');
     if (!btn) return;
-    btn.closest('.sidebar-section').classList.toggle('open');
+    e.stopPropagation();
+
+    if (btn.classList.contains('sidebar-heading')) {
+        btn.closest('.sidebar-section').classList.toggle('open');
+    } else {
+        btn.closest('.sidebar-subgroup').classList.toggle('open');
+    }
 });
 
 // Auto-open the section containing the active link on load
 document.querySelectorAll('.sidebar-link.active').forEach(function (link) {
     const section = link.closest('.sidebar-section');
     if (section) section.classList.add('open');
+    const subgroup = link.closest('.sidebar-subgroup');
+    if (subgroup) subgroup.classList.add('open');
 });
