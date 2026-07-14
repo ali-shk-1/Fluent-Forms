@@ -1,51 +1,43 @@
 <?php
-/* Template Name: Docs Page */
 get_header();
 
-$slug = get_post_field( 'post_name' );
+$path = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+$map  = docsclone_get_sidebar_map();
 ?>
 
 <div class="docs-layout">
 
     <aside class="docs-sidebar">
-        <div class="sidebar-group">
-            <div class="sidebar-heading">Getting Started</div>
-            <a href="<?php echo esc_url( home_url( '/getting-started/' ) ); ?>" class="sidebar-link <?php echo $slug === 'getting-started' ? 'active' : ''; ?>">Introduction</a>
-            <a href="<?php echo esc_url( home_url( '/install-fluent-forms/' ) ); ?>" class="sidebar-link <?php echo $slug === 'install-fluent-forms' ? 'active' : ''; ?>">Install Fluent Forms</a>
-            <a href="<?php echo esc_url( home_url( '/upgrade-to-pro-add-on/' ) ); ?>" class="sidebar-link <?php echo $slug === 'upgrade-to-pro-add-on' ? 'active' : ''; ?>">Upgrade to Pro</a>
-            <a href="<?php echo esc_url( home_url( '/user-interface/' ) ); ?>" class="sidebar-link <?php echo $slug === 'user-interface' ? 'active' : ''; ?>">User Interface</a>
-            <a href="<?php echo esc_url( home_url( '/glossary/' ) ); ?>" class="sidebar-link <?php echo $slug === 'glossary' ? 'active' : ''; ?>">Glossary</a>
-        </div>
-
-        <div class="sidebar-group">
-            <div class="sidebar-heading-collapsed">Creating Forms</div>
-        </div>
-        <div class="sidebar-group">
-            <div class="sidebar-heading-collapsed">Form Fields</div>
-        </div>
-        <div class="sidebar-group">
-            <div class="sidebar-heading-collapsed">Configuring Forms</div>
-        </div>
-        <div class="sidebar-group">
-            <div class="sidebar-heading-collapsed">Design &amp; Styling</div>
-        </div>
-        <div class="sidebar-group">
-            <div class="sidebar-heading-collapsed">Notifications &amp; Confirmations</div>
-        </div>
-    </aside>
+        <?php foreach ( $map as $section => $groups ) : ?>
+            <div class="sidebar-section">
+                <button class="sidebar-heading js-toggle" type="button"><?php echo esc_html( $section ); ?></button>
+                <div class="sidebar-body">
+                    <?php foreach ( $groups as $key => $value ) : ?>
+                        <?php if ( is_array( $value ) ) : ?>
+                            <?php if ( $key !== '_flat' ) : ?>
+                                <div class="sidebar-subheading"><?php echo esc_html( $key ); ?></div>
+                            <?php endif; ?>
+                            <?php foreach ( $value as $slug => $title ) : ?>
+                                <a href="<?php echo esc_url( home_url( '/' . $slug . '/' ) ); ?>"
+                                   class="sidebar-link <?php echo $path === $slug ? 'active' : ''; ?>">
+                                    <?php echo esc_html( $title ); ?>
+                                </a>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </aside>    
 
     <div class="docs-content">
         <?php
-        if ( $slug === 'getting-started' ) {
-            include get_template_directory() . '/content/getting-started.php';
-        } elseif ( $slug === 'install-fluent-forms' ) {
-            include get_template_directory() . '/content/install-fluent-forms.php';
-        } elseif ( $slug === 'upgrade-to-pro-add-on' ) {
-            include get_template_directory() . '/content/upgrade-to-pro.php';
-        } elseif ( $slug === 'user-interface' ) {
-            include get_template_directory() . '/content/user-interface.php';
-        } elseif ( $slug === 'glossary' ) {
-            include get_template_directory() . '/content/glossary.php';
+        $content_file = get_template_directory() . '/content/' . $path . '.php';
+        if ( file_exists( $content_file ) ) {
+            include $content_file;
+        } else {
+            echo '<h1>' . esc_html( $map_title ?? ucwords( str_replace( '-', ' ', $path ) ) ) . '</h1>';
+            echo '<p>Content for this page is coming soon.</p>';
         }
         ?>
     </div>

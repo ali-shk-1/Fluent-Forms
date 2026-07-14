@@ -247,3 +247,35 @@ a:hover {
     margin: 20px 0;
     display: block;
 }
+.sidebar-section {
+    margin-bottom: 6px;
+}
+
+.sidebar-heading {
+    background: none;
+    border: none;
+    color: #f4f4f5;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 8px 0;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar-subheading {
+    color: #71717a;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 14px 0 4px 0;
+}
+
+.sidebar-body {
+    display: none;
+    padding-left: 4px;
+}
+
+.sidebar-section.open .sidebar-body {
+    display: block;
+}

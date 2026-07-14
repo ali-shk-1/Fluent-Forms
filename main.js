@@ -5,21 +5,16 @@ document.addEventListener('click', function (e) {
     const href = link.getAttribute('href');
     if (!href) return;
 
-    // Only intercept our two real routes
-    const docsRoutes = [
-        docsCloneData.homeUrl,
-        docsCloneData.gsUrl,
-        docsCloneData.homeUrl + 'install-fluent-forms/',
-        docsCloneData.homeUrl + 'upgrade-to-pro-add-on/',
-        docsCloneData.homeUrl + 'user-interface/',
-        docsCloneData.homeUrl + 'glossary/'
-    ];
+    const url = new URL(href, window.location.origin);
+    if (url.origin !== window.location.origin) return;
+    const path = url.pathname.replace(/^\/|\/$/g, '');
+
+    const isDocsRoute = docsCloneData.allSlugs.includes(path) || path === '';
+
+    if (!isDocsRoute) return;
 
     const isHome = href === docsCloneData.homeUrl || href === docsCloneData.homeUrl.replace(/\/$/, '');
     const isGettingStarted = href === docsCloneData.gsUrl || href === docsCloneData.gsUrl.replace(/\/$/, '');
-    const isDocsRoute = docsRoutes.some(r => href === r || href === r.replace(/\/$/, ''));
-
-    if (!isDocsRoute) return;
     
     e.preventDefault();
 
@@ -63,4 +58,16 @@ window.addEventListener('popstate', function () {
                 document.title = doc.title;
             }
         });
+});
+
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.js-toggle');
+    if (!btn) return;
+    btn.closest('.sidebar-section').classList.toggle('open');
+});
+
+// Auto-open the section containing the active link on load
+document.querySelectorAll('.sidebar-link.active').forEach(function (link) {
+    const section = link.closest('.sidebar-section');
+    if (section) section.classList.add('open');
 });
