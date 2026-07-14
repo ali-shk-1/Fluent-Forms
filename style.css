@@ -237,3 +237,13 @@ a:hover {
         margin: 0;
     }
 }
+
+.docs-img {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #26262b;
+    margin: 20px 0;
+    display: block;
+}

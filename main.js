@@ -6,11 +6,21 @@ document.addEventListener('click', function (e) {
     if (!href) return;
 
     // Only intercept our two real routes
+    const docsRoutes = [
+        docsCloneData.homeUrl,
+        docsCloneData.gsUrl,
+        docsCloneData.homeUrl + 'install-fluent-forms/',
+        docsCloneData.homeUrl + 'upgrade-to-pro-add-on/',
+        docsCloneData.homeUrl + 'user-interface/',
+        docsCloneData.homeUrl + 'glossary/'
+    ];
+
     const isHome = href === docsCloneData.homeUrl || href === docsCloneData.homeUrl.replace(/\/$/, '');
     const isGettingStarted = href === docsCloneData.gsUrl || href === docsCloneData.gsUrl.replace(/\/$/, '');
+    const isDocsRoute = docsRoutes.some(r => href === r || href === r.replace(/\/$/, ''));
 
-    if (!isHome && !isGettingStarted) return;
-
+    if (!isDocsRoute) return;
+    
     e.preventDefault();
 
     fetch(href)
